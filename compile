@@ -1,0 +1,6 @@
+#!/bin/sh
+
+cd `dirname $0`
+
+g++ -g -Os ./sources/*.cpp -I ./headers -o ./Projet
+i586-mingw32msvc-g++ ./sources/*.cpp -I ./headers -o ./Projet.exe

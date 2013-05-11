@@ -1,0 +1,179 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import wx
+import subprocess
+import os, sys
+
+SCRIPT_PATH = os.path.abspath(os.path.dirname(sys.argv[0]))
+
+class MainWindow(wx.Frame):
+	"""Fenêtre personnalisée"""
+	algofile = None
+
+	def __init__(self, parent, title):
+		wx.Frame.__init__(self, parent, title=title, size=(400,160))
+		self.CreateStatusBar() # Créer une barre d'état
+
+		# Menu "Fichier"
+		fichier = wx.Menu()
+		item = fichier.Append(wx.ID_ANY, "&Tester…", "Lance un test sur un fichier")
+		self.Bind(wx.EVT_MENU, self.onTest, item)
+		item = fichier.Append(wx.ID_OPEN, "&Ouvrir…", "Sélectionne un fichier à analyser")
+		self.Bind(wx.EVT_MENU, self.onOpen, item)
+		fichier.AppendSeparator()
+		item = fichier.Append(wx.ID_ANY, "&Analyser", "Lance l'analyse sur le fichier sélectionné")
+		self.Bind(wx.EVT_MENU, self.onAnalyse, item)
+		item = fichier.Append(wx.ID_ANY, "&Compiler", "Lance la compilation du fichier sélectionné")
+		self.Bind(wx.EVT_MENU, self.onCompile, item)
+		item = fichier.Append(wx.ID_ANY, "&Exécuter", "Exécute le fichier sélectionné")
+		self.Bind(wx.EVT_MENU, self.onExec, item)
+		fichier.AppendSeparator()
+		item = fichier.Append(wx.ID_EXIT, "&Quitter", "Termine l'application")
+		self.Bind(wx.EVT_MENU, self.onExit, item)
+
+		# Menu "Aide"
+		aide = wx.Menu()
+		item = aide.Append(wx.ID_HELP, "&Documentation", "Ouvre la documentation")
+		self.Bind(wx.EVT_MENU, self.onDoc, item)
+		aide.AppendSeparator()
+		item = aide.Append(wx.ID_ABOUT, "À &propos…", "À propos de analyser")
+		self.Bind(wx.EVT_MENU, self.onAbout, item)
+
+		menubar = wx.MenuBar()
+		menubar.Append(fichier, "&Fichier")
+		menubar.Append(aide, "&Aide")
+		self.SetMenuBar(menubar)
+
+		toolbar = wx.ToolBar(self)
+		bmp = wx.Bitmap("share/sprocket_dark.png", wx.BITMAP_TYPE_PNG)
+		item = toolbar.AddSimpleTool(wx.ID_ANY, bmp, "Tester…", "Lance un test sur un fichier")
+		self.Bind(wx.EVT_TOOL, self.onTest, item)
+		toolbar.AddSeparator()
+		bmp = wx.Bitmap("share/help.png", wx.BITMAP_TYPE_PNG)
+		item = toolbar.AddSimpleTool(wx.ID_HELP, bmp, "Documentation", "Ouvre l'aide en ligne")
+		self.Bind(wx.EVT_TOOL, self.onDoc, item)
+		bmp = wx.Bitmap("share/remove.png", wx.BITMAP_TYPE_PNG)
+		item = toolbar.AddSimpleTool(wx.ID_EXIT, bmp, "Quitter", "Termine l'application")
+		self.Bind(wx.EVT_TOOL, self.onExit, item)
+		self.SetToolBar(toolbar)
+
+		box = wx.BoxSizer(wx.VERTICAL)
+		panel = wx.Panel(self)
+		self.label = wx.StaticText(panel, label="Aucun fichier ouvert.", pos=(10,10))
+		box.Add(panel, 0, wx.EXPAND)
+		panel = wx.Panel(self)
+		self.labelAnalyse = wx.StaticText(panel, pos=(10,0))
+		box.Add(panel, 0, wx.EXPAND)
+		panel = wx.Panel(self)
+		self.labelCompil = wx.StaticText(panel, pos=(10,0))
+		box.Add(panel, 0, wx.EXPAND)
+		panel = wx.Panel(self)
+		self.labelExec = wx.StaticText(panel, pos=(10,0))
+		box.Add(panel, 0, wx.EXPAND)
+		self.SetSizer(box)
+
+		self.Show(True)
+
+	def clearLabels(self):
+		self.labelAnalyse.SetLabel("")
+		self.labelCompil.SetLabel("")
+		self.labelExec.SetLabel("")
+
+	def onAbout(self,e):
+		dlg = wx.MessageDialog(self, "Analyseur syntaxique d'algorithmes.", "À propos…", wx.OK)
+		dlg.ShowModal()
+		dlg.Destroy()
+
+	def onAnalyse(self, e):
+		if self.algofile is not None:
+			p = subprocess.Popen([SCRIPT_PATH + os.sep + "Projet", self.algofile], 4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			(ret,err) = p.communicate()
+			if ret != "":
+				dlg = wx.MessageDialog(self, ret, "Erreur d'analyse", wx.ICON_ERROR)
+				dlg.ShowModal()
+				dlg.Destroy()
+				self.clearLabels()
+				self.labelAnalyse.SetLabel("Analyse : Échouée")
+				return False
+			elif err != "":
+				dlg = wx.MessageDialog(self,
+					"Une erreur s'est produite pendant l'exécution de l'analyseur.\n"+err,
+					"Analyse échouée", wx.ICON_ERROR)
+				dlg.ShowModal()
+				dlg.Destroy()
+				self.clearLabels()
+				self.labelAnalyse.SetLabel("Analyse : Échouée")
+			else:
+				#dlg = wx.MessageDialog(self, "L'analyseur avoir fonctionné correctement.", "Analyse réussie", wx.OK)
+				#dlg.ShowModal()
+				#dlg.Destroy()
+				self.clearLabels()
+				self.labelAnalyse.SetLabel("Analyse : Réussie")
+				return True
+		else:
+			dlg = wx.MessageDialog(self, "Aucun fichier sélectionné.", "Analyse impossible", wx.ICON_EXCLAMATION)
+			dlg.ShowModal()
+			dlg.Destroy()
+			return False
+
+	def onCompile(self, e):
+		if self.algofile is not None:
+			p = subprocess.Popen(["g++", self.algofile+".cpp", "-I"+SCRIPT_PATH+"/../libamalgo/headers",
+				SCRIPT_PATH+"/../libamalgo/libalgo.a", "-o"+self.algofile+".exe"],
+				4096, stderr=subprocess.PIPE)
+			err = p.communicate()[1]
+			if err == "":
+				#dlg = wx.MessageDialog(self, "GCC s'est exécuté correctement.", "Compilation réussie", wx.OK)
+				#dlg.ShowModal()
+				#dlg.Destroy()
+				self.labelCompil.SetLabel("Compilation : Réussie")
+				return True
+			else:
+				dlg = wx.MessageDialog(self, "GCC a renvoyé une erreur :\n"+err, "Problème de compilation", wx.ICON_EXCLAMATION)
+				dlg.ShowModal()
+				dlg.Destroy()
+				self.labelCompil.SetLabel("Compilation : Échouée")
+				return False
+		else:
+			dlg = wx.MessageDialog(self, "Aucun fichier sélectionné.", "Compilation impossible", wx.ICON_EXCLAMATION)
+			dlg.ShowModal()
+			dlg.Destroy()
+			return False
+
+	def onDoc(self, e):
+		pass
+
+	def onExec(self, e):
+		if self.algofile is not None:
+			self.labelExec.SetLabel("Exécution…")
+			p = subprocess.Popen(["gnome-terminal","-t", self.algofile, "-e", self.algofile+".exe"])
+		else:
+			dlg = wx.MessageDialog(self, "Aucun fichier sélectionné.", "Exécution impossible", wx.ICON_EXCLAMATION)
+			dlg.ShowModal()
+			dlg.Destroy()
+
+	def onOpen(self, e):
+		dlg = wx.FileDialog(self, "Choisissez un algorithme…",
+			wildcard="Algorithme (*.algo)|*.algo|Fichier texte (*.txt)|*.txt|Tout type|*.*",
+			style=wx.FD_OPEN)
+		dlg.ShowModal()
+		dlg.Destroy()
+		if dlg.GetPath() != "":
+			self.algofile = dlg.GetPath()
+			self.label.SetLabel(self.algofile)
+			self.clearLabels()
+		return dlg.GetPath() != ""
+
+	def onTest(self, e):
+		if self.algofile is not None or self.onOpen(e):
+			if self.onAnalyse(e):
+				if self.onCompile(e):
+					self.onExec(e)
+
+	def onExit(self,e):
+		self.Close(True)
+
+
+app = wx.App(False)  # Create a new app, don't redirect stdout/stderr to a window.
+frame = MainWindow(None, "Analyseur d'algorithmes") # A Frame is a top-level window.
+app.MainLoop()
