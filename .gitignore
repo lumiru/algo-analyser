@@ -1,4 +1,28 @@
+
+# Algorithmes de test
 tests/
+
+# Exécutables générés
 analyser*
 Projet*
-*~
+
+# Script de compilation (hors Makefile)
+compile
+
+# Fichiers objets
+*.o
+
+# Fichiers autotools (pas nécessaire si ./configure existe déjà)
+*.cache
+.deps
+Makefile.in
+config.*
+aclocal.m4
+
+Makefile
+
+# Génére le Makefile
+#install-sh
+#missing
+#configure
+#depcomp
