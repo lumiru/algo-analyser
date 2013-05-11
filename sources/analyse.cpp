@@ -464,8 +464,16 @@ string analyse(Lignes& lignes) {
 									--j;
 								}
 								prog.addVariable(var);
-								if(++j < nbmots && lignes[i][j] == "<-")
-									while(++j < nbmots && lignes[i][j][0] != ',');
+								if(++j < nbmots && lignes[i][j] == "<-") {
+									while(++j < nbmots && (lignes[i][j][0] != ',' || tree[tree.size()-1] == NODE_PAR)) {
+										if(lignes[i][j][0] == '(') {
+											tree.push_back(NODE_PAR);
+										}
+										else if(lignes[i][j][0] == ')') {
+											tree.pop_back();
+										}
+									}
+								}
 								++j;
 							} while(j < nbmots && lignes[i][j-1][0] == ',');
 						}
@@ -793,7 +801,7 @@ string analyse(Lignes& lignes) {
 								}
 								if(j < nbmots && lignes[i][j] == "<-") {
 									algo.addProgCode(currentProg, "=");
-									while(++j < nbmots && lignes[i][j][0] != ',') {
+									while(++j < nbmots && (lignes[i][j][0] != ',' || tree[tree.size()-1] == NODE_PAR)) {
 										// TODO Test de compatibilité des types
 										mot = toLowerCase(lignes[i][j]);
 										if( (mot[0] >= 'a' && mot[0] <= 'z') || mot[0] == '_') {
@@ -840,9 +848,15 @@ string analyse(Lignes& lignes) {
 										}
 										else {
 											algo.addProgCode(currentProg, mot);
-											if(mot[0] == ')' && tableauType != "") {
-												algo.addProgCode(currentProg, tableauType);
-												tableauType = "";
+											if(mot[0] == ')') {
+												if(tableauType != "") {
+													algo.addProgCode(currentProg, tableauType);
+													tableauType = "";
+												}
+												tree.pop_back();
+											}
+											else if(mot[0] == '(') {
+												tree.push_back(NODE_PAR);
 											}
 										}
 									}

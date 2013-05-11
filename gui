@@ -86,7 +86,7 @@ class MainWindow(wx.Frame):
 
 	def onAnalyse(self, e):
 		if self.algofile is not None:
-			p = subprocess.Popen([SCRIPT_PATH + os.sep + "Projet", self.algofile], 4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			p = subprocess.Popen([SCRIPT_PATH + os.sep + "/sources/analyser", self.algofile], 4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			(ret,err) = p.communicate()
 			if ret != "":
 				dlg = wx.MessageDialog(self, ret, "Erreur d'analyse", wx.ICON_ERROR)

@@ -11,7 +11,7 @@ void chargerLib(char argv0[]) {
   Type type;
 
   gotoExeChemin(argv0, cwd, 1024);
-  lignes = ouvrir("share/fonctions.dat");
+  lignes = ouvrir("../share/fonctions.dat");
   chdir(cwd);
   l = lignes.size();
 
