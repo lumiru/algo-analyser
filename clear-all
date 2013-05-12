@@ -1,0 +1,10 @@
+#!/bin/sh
+
+rm autom4te.cache install-sh missing configure depcomp stamp-h1 *.in .deps Makefile aclocal.m4 config.* -rf
+
+cd sources
+rm autom4te.cache install-sh missing configure depcomp stamp-h1 *.in .deps Makefile aclocal.m4 config.* -rf
+
+cd ../lib/libamalgo
+rm autom4te.cache install-sh missing configure depcomp stamp-h1 *.in .deps Makefile aclocal.m4 config.* -rf
+

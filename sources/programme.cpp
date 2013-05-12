@@ -134,7 +134,7 @@ Variable Programme::getVariable(std::string var) const {
 }
 
 // TYPE tabProgs
-int indexOfProg(tabProgs vars, std::string val) {
+int indexOfProg(const tabProgs& vars, std::string val) {
   int l = vars.size();
   int i;
   val = toLowerCase(val);
@@ -146,6 +146,6 @@ int indexOfProg(tabProgs vars, std::string val) {
   }
   return -1;
 }
-bool hasProg(tabProgs vars, std::string val) {
+bool hasProg(const tabProgs& vars, const std::string val) {
   return indexOfProg(vars, val) != -1;
 }

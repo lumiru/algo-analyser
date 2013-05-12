@@ -44,8 +44,8 @@ class Variable {
 };
 
 typedef std::vector<Variable> tabVars;
-int indexOfVar(tabVars, std::string);
-bool hasVar(tabVars, std::string);
+int indexOfVar(const tabVars&, std::string);
+bool hasVar(const tabVars&, const std::string);
 
 #endif
 

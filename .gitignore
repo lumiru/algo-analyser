@@ -11,6 +11,7 @@ compile
 
 # Fichiers objets
 *.o
+*.a
 
 # Fichiers autotools (pas nécessaire si ./configure existe déjà)
 *.cache
@@ -22,7 +23,11 @@ aclocal.m4
 Makefile
 
 # Génére le Makefile
-#install-sh
-#missing
-#configure
-#depcomp
+install-sh
+missing
+configure
+depcomp
+stamp-h1
+
+# Fichiers complémentaires
+*~

@@ -34,8 +34,8 @@ class Programme : public Variable {
 };
 
 typedef std::vector<Programme> tabProgs;
-int indexOfProg(tabProgs, std::string);
-bool hasProg(tabProgs, std::string);
+int indexOfProg(const tabProgs&, std::string);
+bool hasProg(const tabProgs&, const std::string);
 
 #endif
 

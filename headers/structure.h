@@ -25,8 +25,8 @@ class Structure {
 };
 
 typedef std::vector<Structure> tabStructs;
-int indexOfStruct(tabStructs, std::string);
-bool hasStruct(tabStructs, std::string);
+int indexOfStruct(const tabStructs&, std::string);
+bool hasStruct(const tabStructs&, const std::string);
 
 #endif
 

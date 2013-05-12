@@ -66,7 +66,7 @@ std::string Variable::strbasetype() const {
 }
 
 // TYPE tabStructs
-int indexOfStruct(tabStructs vars, std::string val) {
+int indexOfStruct(const tabStructs& vars, std::string val) {
   int l = vars.size();
   int i;
   val = firstLetterCap(val);
@@ -78,6 +78,6 @@ int indexOfStruct(tabStructs vars, std::string val) {
   }
   return -1;
 }
-bool hasStruct(tabStructs vars, std::string val) {
+bool hasStruct(const tabStructs& vars, const std::string val) {
   return indexOfStruct(vars, val) != -1;
 }

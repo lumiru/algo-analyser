@@ -100,7 +100,7 @@ char Variable::getTableauDimension() const {
 }
 
 // TYPE tabVars
-int indexOfVar(tabVars vars, std::string val) {
+int indexOfVar(const tabVars& vars, std::string val) {
 	int l = vars.size();
 	int i;
 	val = toLowerCase(val);
@@ -112,6 +112,6 @@ int indexOfVar(tabVars vars, std::string val) {
 	}
 	return -1;
 }
-bool hasVar(tabVars vars, std::string val) {
+bool hasVar(const tabVars& vars, const std::string val) {
 	return indexOfVar(vars, val) != -1;
 }
