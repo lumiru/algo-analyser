@@ -120,7 +120,7 @@ class MainWindow(wx.Frame):
 
 	def onCompile(self, e):
 		if self.algofile is not None:
-			p = subprocess.Popen(["g++", self.algofile+".cpp", "-I"+SCRIPT_PATH+"/lib/libamalgo",
+			p = subprocess.Popen(["g++", "-w", self.algofile+".cpp", "-I"+SCRIPT_PATH+"/lib/libamalgo",
 				SCRIPT_PATH+"/lib/libamalgo/libamalgo.a", "-o"+self.algofile+".exe"],
 				4096, stderr=subprocess.PIPE)
 			err = p.communicate()[1]

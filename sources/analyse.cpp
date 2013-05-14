@@ -444,9 +444,9 @@ string analyse(Lignes& lignes) {
 											if(tree.size() > 1 && tree[tree.size()-1] == NODE_ROW) {
 												throw '[';
 											}
-											else if(var.getTableauDimension() >= 1) {
+											/*else if(var.getTableauDimension() >= 1) {
 												throw string("Seuls les tableaux à une dimension sont autorisés.");
-											}
+											}*/
 											else {
 												tree.push_back(NODE_ROW);
 												var.setTableau(1);
@@ -836,8 +836,10 @@ string analyse(Lignes& lignes) {
 											}
 											else if(mot == "creertableau" && j + 1 < nbmots
 											 && lignes[i][j+1][0] == '(') {
-												algo.addProgCode(currentProg, "( "+var.strtype()+" ) calloc (( ");
-												tableauType = " + 1 ) , sizeof ( "+var.strbasetype()+" ))";
+												algo.addProgCode(currentProg, "new "+var.strbasetype()+"[");
+												++j;
+												tree.push_back(NODE_PAR);
+												tableauType = "]";
 											}
 											else if(algo.hasProgramme(mot) || isLibFonction(mot)) {
 												algo.addProgCode(currentProg, mot);
@@ -847,16 +849,21 @@ string analyse(Lignes& lignes) {
 											}
 										}
 										else {
-											algo.addProgCode(currentProg, mot);
 											if(mot[0] == ')') {
 												if(tableauType != "") {
 													algo.addProgCode(currentProg, tableauType);
 													tableauType = "";
 												}
+												else {
+													algo.addProgCode(currentProg, mot);
+												}
 												tree.pop_back();
 											}
-											else if(mot[0] == '(') {
-												tree.push_back(NODE_PAR);
+											else {
+												algo.addProgCode(currentProg, mot);
+												if(mot[0] == '(') {
+													tree.push_back(NODE_PAR);
+												}
 											}
 										}
 									}
@@ -920,8 +927,10 @@ string analyse(Lignes& lignes) {
 						}
 						else if(mot == "creertableau" && j + 1 < nbmots
 						 && lignes[i][j+1][0] == '(') {
-							algo.addProgCode(currentProg, "( "+var.strtype()+" ) calloc (( ");
-							tableauType = " + 1 ) , sizeof ( "+var.strbasetype()+" ))";
+							algo.addProgCode(currentProg, "new "+var.strbasetype()+"[");
+							++j;
+							tree.push_back(NODE_PAR);
+							tableauType = "]";
 						}
 						else if(mot == "afficher" && j + 3 < nbmots
 						 && lignes[i][j+1][0] == '(' && lignes[i][j+3][0] == ')') {
@@ -980,11 +989,13 @@ string analyse(Lignes& lignes) {
 					else {
 						tree.pop_back();
 						if(tree.size() >= 2 && currentProg != -1) {
-							algo.addProgCode(currentProg, mot);
-						}
-						if(tableauType != "") {
-							algo.addProgCode(currentProg, tableauType);
-							tableauType = "";
+							if(tableauType != "") {
+								algo.addProgCode(currentProg, tableauType);
+								tableauType = "";
+							}
+							else {
+								algo.addProgCode(currentProg, mot);
+							}
 						}
 					}
 				}

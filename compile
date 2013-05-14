@@ -10,6 +10,4 @@ if test ! -e Makefile; then
 	./configure
 fi
 
-rm config.*
-
 make
