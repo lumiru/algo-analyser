@@ -9,7 +9,6 @@ string analyse(Lignes& lignes) {
 	int taille; // Taille du mot Courant
 	string currentVar = ""; // Nom de la variable courante
 	string iterateur = ""; // Nom de la variable itératrice pour la boucle courante
-	string tableauType = ""; // Type du tableau à l'instanciation
 	int currentProg = -1; // ID du programme courant
 	bool ptVirgule; // Vrai si la ligne doit être finie par un ";"
 	bool ignPar = false;
@@ -837,9 +836,8 @@ string analyse(Lignes& lignes) {
 											else if(mot == "creertableau" && j + 1 < nbmots
 											 && lignes[i][j+1][0] == '(') {
 												algo.addProgCode(currentProg, "new "+var.strbasetype()+"[");
-												++j;
-												tree.push_back(NODE_PAR);
-												tableauType = "]";
+												creertableau(algo,currentProg,lignes,i,j);
+												algo.addProgCode(currentProg, "]");
 											}
 											else if(algo.hasProgramme(mot) || isLibFonction(mot)) {
 												algo.addProgCode(currentProg, mot);
@@ -850,13 +848,7 @@ string analyse(Lignes& lignes) {
 										}
 										else {
 											if(mot[0] == ')') {
-												if(tableauType != "") {
-													algo.addProgCode(currentProg, tableauType);
-													tableauType = "";
-												}
-												else {
-													algo.addProgCode(currentProg, mot);
-												}
+												algo.addProgCode(currentProg, mot);
 												tree.pop_back();
 											}
 											else {
@@ -928,9 +920,8 @@ string analyse(Lignes& lignes) {
 						else if(mot == "creertableau" && j + 1 < nbmots
 						 && lignes[i][j+1][0] == '(') {
 							algo.addProgCode(currentProg, "new "+var.strbasetype()+"[");
-							++j;
-							tree.push_back(NODE_PAR);
-							tableauType = "]";
+							creertableau(algo,currentProg,lignes,i,j);
+							algo.addProgCode(currentProg, "]");
 						}
 						else if(mot == "afficher" && j + 3 < nbmots
 						 && lignes[i][j+1][0] == '(' && lignes[i][j+3][0] == ')') {
@@ -989,13 +980,7 @@ string analyse(Lignes& lignes) {
 					else {
 						tree.pop_back();
 						if(tree.size() >= 2 && currentProg != -1) {
-							if(tableauType != "") {
-								algo.addProgCode(currentProg, tableauType);
-								tableauType = "";
-							}
-							else {
-								algo.addProgCode(currentProg, mot);
-							}
+							algo.addProgCode(currentProg, mot);
 						}
 					}
 				}
@@ -1184,4 +1169,44 @@ string afficher(Algorithme& algo, int currentProg, Lignes& lignes, int i, int j)
 		}
 	}
 	return chaine;
+}
+
+void creertableau(Algorithme& algo, const int currentProg, const Lignes& lignes, int& i, int& j) {
+	int nblignes = lignes.size(); // Nombre de lignes du fichier
+	int nbmots = lignes[i].size(); // Nombre de mot de la ligne courante
+	string mot; // Mot courant
+	int treesize = 1;
+
+	algo.addProgCode(currentProg, "(");
+	j+=2;
+	while(treesize > 0 && i < nblignes) {
+		while(treesize > 0 && j < nbmots) {
+			mot = toLowerCase(lignes[i][j]);
+			if(mot[0] == '(') {
+				++treesize;
+				algo.addProgCode(currentProg, mot);
+			}
+			else if(mot[0] == ')') {
+				--treesize;
+				if(treesize == 0) {
+					algo.addProgCode(currentProg, "+1");
+				}
+				algo.addProgCode(currentProg, mot);
+			}
+			else if(mot[0] == ',' && treesize == 1) {
+				algo.addProgCode(currentProg, "+1)*(");
+			}
+			else {
+				algo.addProgCode(currentProg, mot);
+			}
+
+			++j;
+		}
+
+		if(treesize > 0) {
+			++i;
+			j = 0;
+			nbmots = lignes[i].size();
+		}
+	}
 }

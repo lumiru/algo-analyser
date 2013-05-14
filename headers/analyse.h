@@ -21,6 +21,7 @@ typedef enum Node Node;
 
 std::string analyse(Lignes&);
 std::string afficher(Algorithme&, int currentProg, Lignes&, int i, int j);
+void creertableau(Algorithme& algo, const int currentProg, const Lignes& lignes, int& i, int& j);
 
 #endif
 
