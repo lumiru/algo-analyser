@@ -1,0 +1,143 @@
+Programme mastermind
+var
+  constante entier nbCar <- 5
+  constante caractere premierCar <- 'a'
+  constante caractere dernierCar <- 'e'
+  tableau de caracteres reponse[] <- creertableau(nbCar)
+  tableau de caracteres tampon[] <- creertableau(nbCar)
+  tableau de booléens carOK[] <- creertableau(nbCar)
+  entiers nbOK, nbIn, i, j
+  chaine test <- creerchainevide(nbCar)
+  caractere c <- aleaCar(32,40)
+debut
+  generateurnbaleatoire()
+  pour i <- 1 jusqu'à nbCar faire
+    reponse[i] <- aleaCar(premierCar, dernierCar)
+  finpour
+  // Demander une chaîne de 5 caractères
+  faire
+    Afficher("\nEntrez {} caractères (sans espaces) entre {} et {} : ", nbCar, premierCar, dernierCar)
+    test <- saisiechaine()
+    // TODO Vérifier la saisie
+    pour i <- 1 jusqu'à nbCar faire
+      tampon[i] <- reponse[i]
+      carOK[i] <- faux
+    finpour
+    nbOK <- 0
+    nbIn <- 0
+    pour i <- 1 jusqu'à nbCar faire
+      c <- getCaractere(test, i)
+      // Tester les caractères 1 à 1
+      si c = tampon[i] alors
+        nbOK <- nbOK + 1
+        tampon[i] <- '0'
+        carOK[i] <- vrai
+      finSi
+    finpour
+    // DEBUG Afficher("{}{}{}{}{}\n", tampon[1], tampon[2], tampon[3], tampon[4], tampon[5])
+    pour i <- 1 jusqu'à nbCar faire
+      si non carOK[i] alors
+        c <- getCaractere(test, i)
+        // Tester un caractère par rapport aux autres
+        j <- 1
+        tq j <= nbCar et c <> tampon[j] faire
+          // DEBUG Afficher("{} ≠ {}\n", c, tampon[j])
+          j <- j + 1
+        fintq
+        si c = tampon[j] alors
+          nbIn <- nbIn + 1
+          tampon[j] <- '0'
+        finSi
+      finSi
+    finpour
+    Afficher("Il y a {} bonne(s) réponse(s) et {} lettre(s) mal placée(s).\n", nbOK, nbIn)
+  tq nbOK <> nbCar
+  Afficher("\nVous avez gagné !\n")
+fin
+ /* Test de */
+Sousprogramme aleaCar(caractere mini, caractere maxi) : caractere
+var
+  caractere c
+Debut
+  /* Transformer le caractère en nombre
+   * Générer un nombre aléatoire entre mini et maxi (inclus)
+   * Transformer le nombre en un caractère */
+  c <- nb2car(nombreAleatoire(car2nb(mini), car2nb(maxi)+1))
+  retour c
+Fin
+
+Sousprogramme car2nb(caractere c) : entier
+Debut
+  /*selonque c vaut
+    cas 'a' : retour 1
+    cas 'b' : retour 2
+    cas 'c' : retour 3
+    cas 'd' : retour 4
+    cas 'e' : retour 5
+    cas 'f' : retour 6
+    cas 'g' : retour 7
+    cas 'h' : retour 8
+    cas 'i' : retour 9
+    cas 'j' : retour 10
+    cas 'k' : retour 11
+    cas 'l' : retour 12
+    cas 'm' : retour 13
+    cas 'n' : retour 14
+    cas 'o' : retour 15
+    cas 'p' : retour 16
+    cas 'q' : retour 17
+    cas 'r' : retour 18
+    cas 's' : retour 19
+    cas 't' : retour 20
+    cas 'u' : retour 21
+    cas 'v' : retour 22
+    cas 'w' : retour 23
+    cas 'x' : retour 24
+    cas 'y' : retour 25
+    cas 'z' : retour 26
+  fincas
+  retour 0*/
+  si c >= 'a' et c <= 'z' alors
+  	retour c - 'a' + 1
+  sinon
+  	retour 0
+  finSi
+Fin
+
+Sousprogramme nb2car(entier nb) : caractere
+Debut
+  /*selonque nb vaut
+    cas 1 : retour 'a'
+    cas 2 : retour 'b'
+    cas 3 : retour 'c'
+    cas 4 : retour 'd'
+    cas 5 : retour 'e'
+    cas 6 : retour 'f'
+    cas 7 : retour 'g'
+    cas 8 : retour 'h'
+    cas 9 : retour 'i'
+    cas 10: retour 'j'
+    cas 11: retour 'k'
+    cas 12: retour 'l'
+    cas 13: retour 'm'
+    cas 14: retour 'n'
+    cas 15: retour 'o'
+    cas 16: retour 'p'
+    cas 17: retour 'q'
+    cas 18: retour 'r'
+    cas 19: retour 's'
+    cas 20: retour 't'
+    cas 21: retour 'u'
+    cas 22: retour 'v'
+    cas 23: retour 'w'
+    cas 24: retour 'x'
+    cas 25: retour 'y'
+    cas 26: retour 'z'
+  fincas
+  retour '0'*/
+  si nb >= 1 et nb <= 26 alors
+  	retour nb + 'a' - 1
+  sinon
+  	retour '0'
+  finSi
+Fin

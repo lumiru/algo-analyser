@@ -1,6 +1,7 @@
 
 # Algorithmes de test
-tests/
+tests/*
+!tests/*.algo
 
 # Exécutables générés
 analyser*

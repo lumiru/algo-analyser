@@ -1,0 +1,72 @@
+programme courbe
+var :
+	reel a, b, c, d, e
+	reel da, db, dc, dd
+	reel fx, f2x
+	chaine temp
+	tableauchaines tabch []
+	tableau de reel tabfx [] <- creertableau ( 100 )
+	tableau de entier taby [] <- creertableau ( 100 )
+	tableau de booleen tabaffich[][] <- creertableau ( 200, 100 )
+	entier i, j
+	reel x, t,delta
+	reel minfx, maxfx, max
+	reel pas
+	reel epsilon <- 0.0001
+debut
+	// Initialisation
+	modifietailleconsole ( 160, 80 )  
+	
+	afficher ( "Entrez les coefficient de la fonction ax4 + bx3 + c2 + dx + e sous la forme aa bb cc dd ee : " )
+	temp <- saisiechaine ( )
+	tabch <- split ( temp, ' ' )
+	a <- chainetoreel ( tabch [ 1 ] )
+	b <- chainetoreel ( tabch [ 2 ] )
+	c <- chainetoreel ( tabch [ 3 ] )
+	d <- chainetoreel ( tabch [ 4 ] )
+	e <- chainetoreel ( tabch [ 4 ] )
+	da <- 4 * a
+	db <- 3 * b
+	dc <- 2 * c
+	dd <- d
+	
+	afficher ( "\n\nVous avez saisi :  {3.2}x4 + {3.2}x3 + {3.2}x2 + {3.2}x + {3.2}" , a, b, c, d, e )
+	
+	// Calcul de la courbe
+	i <- 1
+	tant que ( i <= 100 ) faire
+		x <- (reel)i / 10
+		tabfx [ i ] <- ( a * x * x * x * x ) + ( b * x * x * x ) + ( c * x * x) + ( d * x ) + e
+		i <- i + 1
+	fintq
+	
+	afficher ( "\n\n" )
+	i <- 1
+	tant que ( i <= 100 ) faire
+		Afficher ( "\n x = {10.2}  f(x)= {10.2}" , (reel)i / 10, tabfx [ i ] )
+		i <- i + 1
+	fintq
+	
+	Afficher ( "\n Saisir x0 : ")
+	temp <- saisiechaine ( )
+	x <- chainetoreel ( temp )
+	pas <- 0.001
+	delta <- 0
+	faire
+		t <- x
+		x <- x - pas *(( da * x * x *x ) + ( db * x * x ) + ( dc * x ) + dd )
+		delta <- t - x 
+		si ( delta  < 0 ) alors
+			delta <- -delta
+		finsi
+	tant que ( delta > epsilon) 
+	
+	fx <- ( a * x * x * x * x ) + ( b * x * x * x ) + ( c * x * x) + ( d * x ) + e
+	
+	afficher ( "le minimum est : {10.6} et f(x) vaut : {10.6}", x, fx )
+fin	
+	
+
+	
+	
+	

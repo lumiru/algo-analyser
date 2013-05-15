@@ -1,0 +1,49 @@
+
+Programme moyenneTableau
+Var
+	constante entier MAX <- 30
+	tableau d'entiers tab[] <- creertableau(MAX)
+	entier i
+	réel moyenne <- 0
+	réel variance <- 0
+	booléen trouve <- faux
+	entier tmpN <- 0
+	réel tmpX
+	chaîne tmp
+Debut
+
+	generateurNbAleatoire()
+	
+	// Initialisation
+	pour ( i <- 1 jusqu'à MAX ) faire
+		tab[i] <- nombreAleatoire(1, 100)
+	finpour
+	
+	
+	// Traitement
+	pour ( i <- 1 jusqu'à MAX ) faire
+		afficher("{} ", tab[i])
+		tmpN <- tmpN + tab[i]
+	finpour
+	
+	afficher("\nSomme : {}\n", tmpN)
+	moyenne <- ((réel) tmpN) / MAX
+	afficher("Moyenne : {}\n", moyenne)
+	
+	// Variance = somme ( (x - moyenne)² / MAX )
+	
+	pour (i <- 1 jusqu'à MAX) faire
+		tmpX <- tab[i] - moyenne
+		variance <- variance + tmpX*tmpX
+	finpour
+	
+	variance <- variance / MAX	
+	afficher("Variance : {}\n", variance)
+	
+	// Écart-type = racine ( variance )
+	
+	afficher("Écart-type : {}\n", racinecarree(variance))
+
+Fin
+
+

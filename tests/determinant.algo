@@ -1,0 +1,22 @@
+
+Programme determinantMatrice
+Var
+	tableau d'entiers matrice[][] <- creertableau(2,2)
+	entier i, j
+	entier determinant
+Debut
+	generateurNbAleatoire()
+
+	pour ( i <- 1 jusqu'à 2 ) faire
+		pour ( j <- 1 jusqu'à 2 ) faire
+			matrice[i][j] <- nombreAleatoire(0,100)
+			afficher(" {6}", matrice[i][j])
+		finpour
+		afficher("\n")
+	finpour
+
+	determinant <- matrice[1][1] * matrice[2][2] - matrice[1][2] * matrice[2][1]
+	afficher("\nDéterminant : {}", determinant)
+
+Fin
+

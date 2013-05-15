@@ -1,0 +1,44 @@
+
+programme eq2deg
+var
+	entier a, b, c
+	réel delta, x1, x2
+	chaîne tmp
+debut
+	
+	faire
+		afficher("\nEntrer la valeur de a : ")
+		tmp <- saisiechaine()
+		a <- chainetoentier(tmp)
+		
+		si ( a = 0 ) alors
+			afficher("a doit être différent de zéro.")
+		finsi
+	tant que ( a = 0 )
+	
+	afficher("\nEntrer la valeur de b : ")
+	tmp <- saisiechaine()
+	b <- chainetoentier(tmp)
+	
+	afficher("\nEntrer la valeur de c : ")
+	tmp <- saisiechaine()
+	c <- chainetoentier(tmp)
+	
+	delta <- b*b - 4*a*c
+	afficher("\nDelta = {}\n", delta)
+	
+	si ( delta < 0 ) alors
+		afficher("Il n'y a aucune solution.")
+	sinon
+		si ( delta = 0 ) alors
+			afficher("Il y a une unique solution : {}", ((réel) -b) / (2*a))
+		sinon
+			x1 <- (-b - racinecarree(delta)) / ( 2*a )
+			x2 <- (-b + racinecarree(delta)) / ( 2*a )
+			
+			afficher("Il y a deux solutions : {} et {}", x1, x2)
+		finsi
+	finsi
+	
+fin
+

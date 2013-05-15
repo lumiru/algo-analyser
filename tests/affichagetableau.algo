@@ -1,0 +1,37 @@
+Programme AffichTableau
+var
+	constante entiere MAX <- 10
+	Tableau d'entier Tab [ ] [ ] 
+	Entier i <- 1
+	entier j
+
+début
+	tab <- creertableau( MAX, MAX )
+	generateurNbAleatoire()
+	// 1  : Initialisation aléatoire du tableau
+	 
+	Tant que ( i <= MAX  ) faire
+		j <- 1
+		Tant que ( j <= MAX  ) faire
+			Tab [ i ][ j ] <- nombreAleatoire ( 0, 21 )		// init. d'une case
+			j <- j + 1
+		fintq
+		i <- i + 1					
+	fintq  
+
+    // 2  : Affichage du tableau
+	i <- 1			// repositionnement en tête du tableau
+	
+	Tant que ( i <= MAX  ) faire
+		j <- 1
+		Tant que ( j <= MAX  ) faire
+			Afficher ( " {2} " , Tab [ i ][j] )	// init. d'une case
+			j <- j + 1
+		fintq
+		Afficher ( "\n" )
+		i <- i + 1					
+	fintq
+	
+	Afficher ( "\n\n" ) 	
+Fin
+

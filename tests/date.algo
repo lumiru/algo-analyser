@@ -1,0 +1,197 @@
+Type
+  structure sDate
+    entier jour
+    entier mois
+    entier annee
+  finStruct
+
+Programme entrerDate
+Var
+  chaîne temp <- creerchainevide(10)
+  sDate auj
+  sDate naissance
+  entiers ecartp, ecart, i, unit
+Début
+  //faire 
+    Afficher("Entrez la date d'aujourd'hui (jj-mm-aaaa) : ")
+    temp <- Saisiechaine()
+    auj <- structDate(temp)
+    Afficher("Entrez votre date de naissance (jj-mm-aaaa) : ")
+    temp <- Saisiechaine()
+    naissance <- structDate(temp)
+    /*si ( ddate.jour = 0 )
+      Afficher("\nVous avez entrer une date invalide ou dans un format errone.\nUtilisez le format jj-mm-aaaa\n\n")
+    finSi
+  tq (ddate.jour = 0)
+  Afficher("\n{2}.{2}.{4}", ddate.jour, ddate.mois, ddate.annee)*/
+  // Afficher("\n{2}.{2}.{4}", auj.jour, auj.mois, auj.annee)
+  // Afficher("\n{2}.{2}.{4}", naissance.jour, naissance.mois, naissance.annee)
+
+  ecartp <- auj.annee - naissance.annee - 1 // Écart en année complète.
+  ecart <- ecartp * 365
+  pour (i <- 1 jusqu'à ecartp) faire
+    unit <- naissance.annee + i
+    si ((unit > 1582) et (unit modulo 4 = 0) et ((unit modulo 100 <> 0) ou (unit modulo 400 = 0))) alors
+      ecart <- ecart + 1
+    finSi
+  finPour
+  // Afficher("\nNombre de jours en annee complete : {}", ecart)
+  
+  // Nombre de mois entre le jour de naissance et le premier janvier de l'année suivante (mois de naissance compris)
+  ecartp <- 12 - naissance.mois + 1
+  pour (i <- 1 jusqu'à ecartp) faire
+  	// Numéro du mois
+    unit <- naissance.mois + i - 1
+    si ( unit modulo 2 = 1 et unit < 8 ) ou ( unit modulo 2 = 0 et unit >= 8 ) alors
+      ecart <- ecart + 31
+    sinon
+      si (unit = 2) alors
+        unit <- naissance.annee
+        si ((unit > 1582) et (unit modulo 4 = 0) et ((unit modulo 100 <> 0) ou (unit modulo 400 = 0))) alors
+          ecart <- ecart + 29
+        sinon
+          ecart <- ecart + 28
+        finSi
+      sinon
+        ecart <- ecart + 30
+      finSi
+    finSi
+  finPour
+  // Afficher("\nNombre de jours en annees completes + annee de naissance : {}", ecart)
+  
+  // Nombre de mois entre le 31 décembre de l'année précédente et aujourd'hui (mois courant exclus)
+  ecartp <- auj.mois - 1
+  pour (i <- 1 jusqu'à ecartp) faire
+    unit <- i
+    si ( ((unit modulo 2 = 1) et (unit < 8)) ou ((unit modulo 2 = 1) et (unit >= 8)) ) alors
+      ecart <- ecart + 31
+    sinon
+      si (unit = 2) alors
+        unit <- auj.annee
+        si ((unit > 1582) et (unit modulo 4 = 0) et ((unit modulo 100 <> 0) ou (unit modulo 400 = 0))) alors
+          ecart <- ecart + 29
+        sinon
+          ecart <- ecart + 28
+        finSi
+      sinon
+        ecart <- ecart + 30
+      finSi
+    finSi
+  finPour
+  // Afficher("\nNombre de jours en mois complets : {}", ecart)
+  ecart <- ecart + auj.jour
+  ecart <- ecart - naissance.jour
+  Afficher("\nNombre de jours total : {}", ecart)
+
+  // Jour de la semaine
+  // Jour actuel - ecart = jour de naissance
+  Afficher("\nEntrez le jour d'aujourd'hui\n1: Lundi\n2: Mardi\n3: Mercredi\n4: Jeudi\n5: Vendredi\n6: Samedi\n7: Dimanche\n (1-7) : ")
+  temp <- saisiechaine()
+  ecartp <- chainetoentier(temp)
+  Afficher("\nVous avez entre : ")
+  Selon que ( ecartp ) vaut
+    cas 1: Afficher("Lundi")
+    cas 2: Afficher("Mardi")
+    cas 3: Afficher("Mercredi")
+    cas 4: Afficher("Jeudi")
+    cas 5: Afficher("Vendredi")
+    cas 6: Afficher("Samedi")
+    cas 7: Afficher("Dimanche")
+    defaut: Afficher("\nErreur ({})", ecart)
+  finselonque
+  ecart <- ecart modulo 7
+  ecart <- ecartp - ecart
+  ecart <- ecart modulo 7
+  Afficher("\nVous etes ne un ")
+  Selon que ( ecart ) vaut
+    cas 1: Afficher("lundi")
+    cas 2: Afficher("mardi")
+    cas 3: Afficher("mercredi")
+    cas 4: Afficher("jeudi")
+    cas 5: Afficher("vendredi")
+    cas 6: Afficher("samedi")
+    cas 0: Afficher("dimanche")
+    defaut: Afficher("\nErreur ({})", ecart)
+  finselonque
+  Afficher(".\n")
+Fin
+
+SousProgramme structDate ( chaîne ch ) : sDate
+Var
+  // chaîne ch <- creerchainevide(10)
+  caractère c
+  entier longueur <- longueurChaine(ch)
+  entier ntemp <- 0
+  entier i
+  sDate ret
+  sDate ERR
+Début
+  ERR.jour <- 0
+  ERR.mois <- 0
+  ERR.annee <- 0
+  // Lire la chaine
+  pour (i <- 1 jusqu'à longueur) faire
+    c <- getCaractere(ch, i)
+    si i <> 3 et i <> 6 alors
+      // - Vérifier si c'est un chiffre
+      si estChiffre(c) alors
+        ntemp <- ntemp*10 + c - 48
+        si i > 6 alors
+          ret.annee <- ntemp
+        sinon
+          si i > 3 alors
+            ret.mois <- ntemp
+          sinon
+            ret.jour <- ntemp
+          finSi
+        finSi
+      sinon
+        retour ERR
+      finSi
+    sinon
+      // - Vérifier si c'est un /.- sinon ERR
+      si c <> '/' et c <> '.' et c <> '-' alors
+        retour ERR
+      finSi
+      ntemp <- 0
+    finSi
+    // i <- i+1
+  finPour
+  // Annee AA -> AAAA
+  si ret.annee < 100 alors
+    si ret.annee < 70 alors
+      ret.annee <- ret.annee + 2000
+    sinon
+      ret.annee <- ret.annee + 1900
+    finSi
+  finSi
+  // Vérifier si la sDate est correcte
+  si ret.jour < 1 ou ret.jour > 31 ou ret.mois < 1 ou ret.mois > 12 alors
+    retour ERR
+  finSi
+  // Les mois de 32 jours sont déjà traités
+  si (ret.mois < 8 et ret.mois modulo 2 = 0) ou (ret.mois >= 8 et ret.mois modulo 2 = 1) alors
+    si ret.jour > 30 alors
+      retour ERR
+    finSi
+    si ret.mois = 2 alors
+      si ret.jour > 29 alors
+        retour ERR
+      finSi
+      si ret.jour > 28 alors
+        si ret.annee > 1582 et ret.annee modulo 4 = 0
+         et (ret.annee modulo 100 <> 0 ou ret.annee modulo 400 = 0) alors
+        sinon
+          retour ERR
+        finSi
+      finSi
+    finSi
+  finSi
+  retour ret
+Fin
+
+Sousprogramme estChiffre(caractère c) : booléen
+Début
+  retour c <= '9' et c >= '0'
+Fin
+
