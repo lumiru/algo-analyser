@@ -1,0 +1,17 @@
+algo-analyser
+=============
+
+Analyseur pour algorithmes écrits en français (dans le style des impératifs pour le BTS SIO).
+
+Fonctionne sur Windows et Linux.
+
+Compilation
+-----------
+
+Utilise les autotools pour être compilé (ou la ligne commenté dans le fichier `./compile`). Les algorithmes ont également besoin de la bibliothèque `lib/libamalgo/libamalgo.a` pour être compilé.
+
+Utilisation
+-----------
+
+Un script python a été produit afin d'éviter l'interface CLI. Celle-ci utilise la bibliothèque wxWidget pour l'interface graphique (apt-get install python-wxgtk2.8).
+Pour analyser un algorithme, il suffit d'utiliser la commande `analyser <fichier_source>`, il sera alors traduit en C++ vers le fichier `<fichier_source>.cpp`.
