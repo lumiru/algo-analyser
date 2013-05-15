@@ -10,11 +10,14 @@ class Programme : public Variable {
     Programme();
     Programme(std::string nnom);
     Programme(Type ntype, std::string nnom = NULL, Structure* nstructure = NULL);
+    //Programme(const Programme& var);
 
-    void addArgument(Variable);
-    void addVariable(Variable);
+    void addArgument(Variable&);
+    void addVariable(Variable&);
     void addCode(std::string);
     void addCodeInstance(std::string);
+
+    void setVariable(Variable&);
 
     std::string signature() const;
     std::string instancier() const;

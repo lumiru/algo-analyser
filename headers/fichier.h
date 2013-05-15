@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <string> // Type chaîne de caractères
 #include <vector>
+#include <iostream>
 #include <fstream>
 #include "functions.h"
 #include "charset.h"

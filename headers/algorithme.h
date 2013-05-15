@@ -25,6 +25,7 @@ class Algorithme {
     Variable progVar(int, std::string) const;
 
     bool key2C(int currentProg, std::string mot);
+    void setProgVar(int, Variable&);
 
     std::string ecrire() const;
     bool hasProgramme(std::string) const;

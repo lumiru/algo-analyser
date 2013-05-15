@@ -18,12 +18,17 @@ class Variable {
   public:
     Variable();
     Variable(Type ntype, std::string nnom = NULL, bool nconstante = false, Structure* nstructure = NULL);
+    //Variable(const Variable& var);
 
     void setType(Type ntype, Structure* nstructure = NULL);
     void setNom(std::string nnom);
-    void setTableau(char taille = 0);
+    void setTableau(char dimension = 0);
     void setConstante();
     void setPositif();
+
+    void setTailleTableau(const std::vector<std::string>& tailles);
+    void addTailleTableau(std::string taille);
+    void clearTailleTableau();
 
     Structure* getStructure() const;
     std::string getNom() const;
@@ -33,11 +38,17 @@ class Variable {
     std::string instancier() const;
     bool isTableau() const;
     char getTableauDimension() const;
+    std::string getTailleTableau(int dimension) const;
 
   protected:
     bool constante;
     bool positif;
+
+    // Dimension du tableau (-1 si n'est pas un tableau)
     char tableau;
+    // Taille pour chaque dimension du tableau (vide si n'est pas un tableau).
+    std::vector<std::string> tailleTableau;
+
     Type type;
     std::string nom;
     Structure* structure;

@@ -26,8 +26,8 @@ int main(int argc, char* argv[]) {
 			// Liste des variables et leurs types
 	// 2e lecture : transcription
 		// Gestion de la fonction Afficher (%X?ld %X?s %X?c %X?lf…) et TODO Afficher("…"+var+"…"…)
-		// Gestion de la fonction creertableau (utilisation de calculs et TODO multidimensions) :
-			// (TYPE*) calloc ( (taille1 + 1) * (taille2 + 1)… ) sizeof( TYPE );
+		// Gestion de la fonction creertableau (utilisation de calculs et multidimensions) :
+			// new TYPE[ (taille1 + 1) * (taille2 + 1)… ];
 	int i, j;
 	char source[MAX_SOURCE_FILENAME_SIZE];
 	Lignes fichier;

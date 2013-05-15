@@ -105,6 +105,14 @@ class MainWindow(wx.Frame):
 				dlg.Destroy()
 				self.clearLabels()
 				self.labelAnalyse.SetLabel("Analyse : Échouée")
+			elif p.returncode != 0:
+				dlg = wx.MessageDialog(self,
+					"Une erreur s'est produite pendant l'exécution de l'analyseur qui a retourné le code "+str(p.returncode)+".",
+					"Analyse échouée", wx.ICON_ERROR)
+				dlg.ShowModal()
+				dlg.Destroy()
+				self.clearLabels()
+				self.labelAnalyse.SetLabel("Analyse : Échouée")
 			else:
 				#dlg = wx.MessageDialog(self, "L'analyseur avoir fonctionné correctement.", "Analyse réussie", wx.OK)
 				#dlg.ShowModal()

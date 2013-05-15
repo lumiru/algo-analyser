@@ -4,7 +4,7 @@ using namespace std;
 
 Charset getCharset(ifstream& file) {
 	Charset charset = lireBOM(file);
-	if(charset > CHARSET_BOM_NOT_FIND) {
+	if(charset > CHARSET_BOM_NOT_FOUND) {
 		return charset;
 	}
 	return findCharset(file);
@@ -55,7 +55,7 @@ Charset lireBOM(ifstream& file) {
 
 	file.seekg(0, ios::beg);
 	// Fichier sans BOM
-	return CHARSET_BOM_NOT_FIND;
+	return CHARSET_BOM_NOT_FOUND;
 }
 
 Charset findCharset(ifstream& file) {

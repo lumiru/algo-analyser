@@ -21,7 +21,7 @@ enum Charset {
   CHARSET_BOCU1 = 8,
   CHARSET_SCSU = 9,
   // BOM non trouvé, utiliser findCharset
-  CHARSET_BOM_NOT_FIND = -1
+  CHARSET_BOM_NOT_FOUND = -1
 };
 typedef enum Charset Charset;
 
@@ -32,7 +32,7 @@ Charset getCharset(std::ifstream& file);
 // Renvoie un CHARSET
 Charset lireBOM(std::ifstream& file);
 
-// À utiliser sur lireBOM retourne CHARSET_BOM_NOT_FIND
+// À utiliser sur lireBOM retourne CHARSET_BOM_NOT_FOUND
 // Analyse les caractères spéciaux du fichier pour définir un charset.
 // Renvoie : 
 //  - CHARSET_ASCII si aucun caractère spécial trouvé ;

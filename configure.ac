@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT(analyserAlgo, 0.1n, f.turpin@iia-laval.fr)
+AC_INIT(algo-analyser, 0.2, f.turpin@iia-laval.fr)
 AM_INIT_AUTOMAKE
 
 #AC_CONFIG_SRCDIR([headers/variable.h])

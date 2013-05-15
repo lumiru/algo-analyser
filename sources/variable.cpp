@@ -9,7 +9,7 @@ Variable::Variable() {
 	tableau = -1;
 	positif = false;
 }
-Variable::Variable(Type ntype, std::string nnom, bool nconstante, Structure* nstructure) {
+Variable::Variable(Type ntype, std::string nnom, bool nconstante, Structure* nstructure)  {
 	setType(ntype, nstructure);
 	setNom(nnom);
 	constante = nconstante;
@@ -57,6 +57,21 @@ void Variable::setPositif() {
 	positif = true;
 }
 
+void Variable::setTailleTableau(const std::vector<std::string>& tailles) {
+	tailleTableau = std::vector<std::string>(tailles);
+}
+void Variable::addTailleTableau(std::string taille) {
+	if(tableau > tailleTableau.size()) {
+		tailleTableau.push_back(taille);
+	}
+	else {
+		throw "Le tableau créé a plus de dimensions que sa définition ("+int2str(tableau)+":"+taille+").";
+	}
+}
+void Variable::clearTailleTableau() {
+	tailleTableau.clear();
+}
+
 
 Structure* Variable::getStructure() const {
 	return structure;
@@ -97,6 +112,11 @@ bool Variable::isTableau() const {
 }
 char Variable::getTableauDimension() const {
 	return tableau;
+}
+std::string Variable::getTailleTableau(int dimension) const {
+	return dimension < tailleTableau.size() ?
+		tailleTableau.at(dimension) :
+		"0";
 }
 
 // TYPE tabVars

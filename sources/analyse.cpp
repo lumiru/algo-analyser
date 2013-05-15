@@ -18,6 +18,8 @@ string analyse(Lignes& lignes) {
 	Programme prog; // Programme courant
 	Structure structure; // Structure courante
 	Variable var; // Variable courante
+	Variable currentTab; // Tableau courant
+	int currentDim = 0; // Dimension de l'index du tableau courant
 
 	tree.reserve(20); // Reserve une marge de 20 nœuds
 
@@ -836,7 +838,7 @@ string analyse(Lignes& lignes) {
 											else if(mot == "creertableau" && j + 1 < nbmots
 											 && lignes[i][j+1][0] == '(') {
 												algo.addProgCode(currentProg, "new "+var.strbasetype()+"[");
-												creertableau(algo,currentProg,lignes,i,j);
+												creertableau(algo,var,currentProg,lignes,i,j);
 												algo.addProgCode(currentProg, "]");
 											}
 											else if(algo.hasProgramme(mot) || isLibFonction(mot)) {
@@ -920,7 +922,7 @@ string analyse(Lignes& lignes) {
 						else if(mot == "creertableau" && j + 1 < nbmots
 						 && lignes[i][j+1][0] == '(') {
 							algo.addProgCode(currentProg, "new "+var.strbasetype()+"[");
-							creertableau(algo,currentProg,lignes,i,j);
+							creertableau(algo,var,currentProg,lignes,i,j);
 							algo.addProgCode(currentProg, "]");
 						}
 						else if(mot == "afficher" && j + 3 < nbmots
@@ -985,16 +987,58 @@ string analyse(Lignes& lignes) {
 					}
 				}
 				else if(taille > 0 && mot[0] == '[') {
-					algo.addProgCode(currentProg, mot);
-					tree.push_back(NODE_ROW);
+					if(var.getTableauDimension() > 1 && var.getNom() != currentTab.getNom()) {
+						if(currentDim == 0) {
+							if(var.getTableauDimension() > 1) {
+								currentDim = 1;
+								currentTab = var;
+								algo.addProgCode(currentProg, mot + "(");
+								tree.push_back(NODE_ROW);
+							}
+							else {
+								algo.addProgCode(currentProg, mot);
+								tree.push_back(NODE_ROW);
+							}
+						}
+						else {
+							throw "L'utilisation de tableaux en tant qu'index d'un tableau multidimensionnel n'est pas permise (1).";
+						}
+					}
+					else if(var.getNom() != currentTab.getNom() && var.isTableau() && currentTab.isTableau()) {
+						//algo.addProgCode(currentProg, mot);
+						//tree.push_back(NODE_ROW);
+						throw "L'utilisation de tableaux en tant qu'index d'un tableau multidimensionnel n'est pas permise (2).";
+					}
+					else if(currentDim > 0) {
+						++currentDim;
+						algo.addProgCode(currentProg, "+(");
+					}
+					else {
+						algo.addProgCode(currentProg, mot);
+						tree.push_back(NODE_ROW);
+					}
 				}
 				else if(taille > 0 && mot[0] == ']') {
-					algo.addProgCode(currentProg, mot);
-					/* Inutile, [] suffisent !
-					if(tree[tree.size()-1] == NODE_ROW) {
+					if(currentTab.isTableau() && currentDim < currentTab.getTableauDimension()) {
+						// tab[i,j] = tab[i*jmax + j]
+						// tab[i,j,k] = tab[i*jmax*kmax + j*kmax + k]
 						algo.addProgCode(currentProg, ")");
-					} */
-					tree.pop_back();
+
+						for (int k = currentDim; k < currentTab.getTableauDimension(); ++k)
+						{
+							algo.addProgCode(currentProg, "*("+currentTab.getTailleTableau(k)+")");
+						}
+					}
+					else {
+						if (currentTab.isTableau()) {
+							currentDim = 0;
+							currentTab = Variable();
+							algo.addProgCode(currentProg, ")");
+						}
+
+						algo.addProgCode(currentProg, mot);
+						tree.pop_back();
+					}
 				}
 				else if(mot == "<-") {
 					algo.addProgCode(currentProg, "=");
@@ -1171,10 +1215,11 @@ string afficher(Algorithme& algo, int currentProg, Lignes& lignes, int i, int j)
 	return chaine;
 }
 
-void creertableau(Algorithme& algo, const int currentProg, const Lignes& lignes, int& i, int& j) {
+void creertableau(Algorithme& algo, Variable& var, const int currentProg, const Lignes& lignes, int& i, int& j) {
 	int nblignes = lignes.size(); // Nombre de lignes du fichier
 	int nbmots = lignes[i].size(); // Nombre de mot de la ligne courante
 	string mot; // Mot courant
+	string dimCode = "";
 	int treesize = 1;
 
 	algo.addProgCode(currentProg, "(");
@@ -1182,22 +1227,34 @@ void creertableau(Algorithme& algo, const int currentProg, const Lignes& lignes,
 	while(treesize > 0 && i < nblignes) {
 		while(treesize > 0 && j < nbmots) {
 			mot = toLowerCase(lignes[i][j]);
+
 			if(mot[0] == '(') {
 				++treesize;
 				algo.addProgCode(currentProg, mot);
+				dimCode += mot;
 			}
 			else if(mot[0] == ')') {
 				--treesize;
 				if(treesize == 0) {
+					var.addTailleTableau(dimCode);
+					dimCode.clear();
+
 					algo.addProgCode(currentProg, "+1");
+				}
+				else {
+					dimCode += mot;
 				}
 				algo.addProgCode(currentProg, mot);
 			}
 			else if(mot[0] == ',' && treesize == 1) {
+				var.addTailleTableau(dimCode);
+				dimCode.clear();
+
 				algo.addProgCode(currentProg, "+1)*(");
 			}
 			else {
 				algo.addProgCode(currentProg, mot);
+				dimCode += mot;
 			}
 
 			++j;
@@ -1209,4 +1266,6 @@ void creertableau(Algorithme& algo, const int currentProg, const Lignes& lignes,
 			nbmots = lignes[i].size();
 		}
 	}
+
+	algo.setProgVar(currentProg, var);
 }
