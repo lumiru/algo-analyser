@@ -4,7 +4,7 @@ var :
 	reel da, db, dc, dd
 	reel fx, f2x
 	chaine temp
-	tableauchaines tabch []
+	tableau de chaines tabch []
 	tableau de reel tabfx [] <- creertableau ( 100 )
 	tableau de entier taby [] <- creertableau ( 100 )
 	tableau de booleen tabaffich[][] <- creertableau ( 200, 100 )
@@ -15,7 +15,7 @@ var :
 	reel epsilon <- 0.0001
 debut
 	// Initialisation
-	modifietailleconsole ( 160, 80 )  
+	//modifietailleconsole ( 160, 80 )  
 	
 	afficher ( "Entrez les coefficient de la fonction ax4 + bx3 + c2 + dx + e sous la forme aa bb cc dd ee : " )
 	temp <- saisiechaine ( )
@@ -24,7 +24,7 @@ debut
 	b <- chainetoreel ( tabch [ 2 ] )
 	c <- chainetoreel ( tabch [ 3 ] )
 	d <- chainetoreel ( tabch [ 4 ] )
-	e <- chainetoreel ( tabch [ 4 ] )
+	e <- chainetoreel ( tabch [ 5 ] )
 	da <- 4 * a
 	db <- 3 * b
 	dc <- 2 * c
