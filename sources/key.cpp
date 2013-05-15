@@ -85,7 +85,7 @@ Type typeOfKey(std::string mot) {
 }
 std::string typeC(Type type) {
 	if(type < TYP_STRUCT) {
-		std::string toStr[] = {"void", "long", "double", "char", "char", "bool", "FILE*"};
+		std::string toStr[] = {"void", "long", "double", "char", "char*", "bool", "FILE*"};
 		return toStr[type];
 	}
 	else {

@@ -111,7 +111,12 @@ bool Variable::isTableau() const {
 	return tableau >= 0;
 }
 char Variable::getTableauDimension() const {
-	return tableau;
+	if(type == TYP_CHAINE && tableau > 1) {
+		return tableau - 1;
+	}
+	else {
+		return tableau;
+	}
 }
 std::string Variable::getTailleTableau(int dimension) const {
 	return dimension < tailleTableau.size() ?

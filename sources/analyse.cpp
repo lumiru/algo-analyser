@@ -1007,7 +1007,8 @@ string analyse(Lignes& lignes) {
 					else if(var.getNom() != currentTab.getNom() && var.isTableau() && currentTab.isTableau()) {
 						//algo.addProgCode(currentProg, mot);
 						//tree.push_back(NODE_ROW);
-						throw "L'utilisation de tableaux en tant qu'index d'un tableau multidimensionnel n'est pas permise (2).";
+						throw "L'utilisation de tableaux (" + var.getNom() + ") en tant qu'index d'un tableau multidimensionnel ("
+							+ currentTab.getNom() + ") n'est pas permise (2).";
 					}
 					else if(currentDim > 0) {
 						++currentDim;

@@ -46,7 +46,7 @@ Variable Structure::getAttribut(std::string attr) const {
 
 // Necessaire pour l'acces à l'attribut nom de structure
 std::string Variable::strtype() const {
-  return strbasetype() + (tableau > 0?"*":"");
+  return strbasetype() + (tableau - (type == TYP_CHAINE?1:0) > 0?"*":"");
 }
 std::string Variable::strbasetype() const {
   std::string rtype = "";
