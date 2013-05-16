@@ -8,7 +8,12 @@ Fonctionne sur Windows et Linux.
 Compilation
 -----------
 
-Utilise les autotools pour être compilé (ou la ligne commenté dans le fichier `./compile`). Les algorithmes ont également besoin de la bibliothèque `lib/libamalgo/libamalgo.a` pour être compilé.
+Utilise les autotools pour être compilé (ou, plus simplement, la ligne commentée dans le fichier `./compile`).
+Les algorithmes ont également besoin de la bibliothèque `libamalgo` pour être compilé. Pour cela, il suffit de vous rendre dans le dossier `lib/libamalgo` puis entrez les commandes suivantes :
+
+$ ./autogen.sh
+$ ./configure
+$ make && make install
 
 Utilisation
 -----------

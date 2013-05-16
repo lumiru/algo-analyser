@@ -9,7 +9,7 @@ AC_CONFIG_AUX_DIR(.)
 AM_INIT_AUTOMAKE
 AC_CONFIG_MACRO_DIR([m4])
 
-AC_CONFIG_SRCDIR([libalgo.cpp])
+AC_CONFIG_SRCDIR([libamalgo.cpp])
 AC_CONFIG_HEADERS(config.h)
 
 # Checks for programs.

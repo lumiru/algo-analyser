@@ -8,7 +8,7 @@
 // en supprimant toute référence à un pointeur
 //
 //---------------------------------------------------------------------------
-#include "libalgo.h"
+#include "libamalgo.h"
 
 /*** 1° PARTIE : SOUS-PROGRAMMES GERANT LES CHAINES ET LES TABLEAUX DE CHAINES ****/
 

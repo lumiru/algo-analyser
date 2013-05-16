@@ -122,7 +122,7 @@ void Algorithme::setProgVar(int id, Variable& var) {
 
 std::string Algorithme::ecrire() const {
 	std::string str = "#include <cstdlib>\n#include <cstdio>\n\
-	 \n#include \"libalgo.h\"\n\n";
+	 \n#include <libamalgo.h>\n\n";
 	int l = types.size();
 	int i, rec_i;
 

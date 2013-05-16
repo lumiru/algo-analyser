@@ -4,8 +4,8 @@ tests/*
 !tests/*.algo
 
 # Exécutables générés
-analyser*
-Projet*
+bin/
+includes/
 
 # Script de compilation (hors Makefile)
 compile
@@ -32,3 +32,5 @@ stamp-h1
 
 # Fichiers complémentaires
 *~
+.*
+!.gitignore

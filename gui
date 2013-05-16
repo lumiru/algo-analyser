@@ -88,7 +88,7 @@ class MainWindow(wx.Frame):
 
 	def onAnalyse(self, e):
 		if self.algofile is not None:
-			p = subprocess.Popen([SCRIPT_PATH + os.sep + "sources" + os.sep + "analyser", self.algofile], 4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			p = subprocess.Popen([SCRIPT_PATH + os.sep + "bin" + os.sep + "analyser", self.algofile], 4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			(ret,err) = p.communicate()
 			if ret != "":
 				dlg = wx.MessageDialog(self, ret, "Erreur d'analyse", wx.ICON_ERROR)
@@ -128,8 +128,8 @@ class MainWindow(wx.Frame):
 
 	def onCompile(self, e):
 		if self.algofile is not None:
-			p = subprocess.Popen(["g++", "-w", self.algofile+".cpp", "-I"+SCRIPT_PATH+"/lib/libamalgo",
-				SCRIPT_PATH+"/lib/libamalgo/libamalgo.a", "-o"+self.algofile+".exe"],
+			p = subprocess.Popen(["g++", "-w", self.algofile+".cpp", "-I"+SCRIPT_PATH+"/includes",
+				"-L"+SCRIPT_PATH+"/lib", "-lamalgo", "-o"+self.algofile+".exe"],
 				4096, stderr=subprocess.PIPE)
 			err = p.communicate()[1]
 			if err == "":
